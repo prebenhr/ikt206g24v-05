@@ -1,0 +1,32 @@
+﻿version: '3.8'
+
+services:
+  assignment_5:
+    build: .
+    container_name: assignment_5
+    networks:
+      - web
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB:       ${POSTGRES_DB}
+      POSTGRES_USER:     ${POSTGRES_USR}
+      POSTGRES_PASSWORD: ${POSTGRES_PWD}
+
+  caddy:
+    image: caddy
+    container_name: caddy_reverse_proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+    networks:
+      - web
+    depends_on:
+      - assignment_5
+
+networks:
+  web:
+    driver: bridge
