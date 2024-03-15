@@ -1,36 +1,22 @@
-﻿version: '3.8'
-
-services:
+﻿services:
   web:
     build: .
-    container_name: web
-    networks:
-      - web
-    ports:
-      - "80:80"
-      - "443:443"
 
   db:
     image: postgres
-    container_name: assignment_5_db
     environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=Password1.
-
+      POSTGRES_PASSWORD: Password1.
+  
   caddy:
     image: caddy
-    container_name: caddy_reverse_proxy
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
     ports:
       - "80:80"
       - "443:443"
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
-    networks:
-      - web
+      - "443:443/udp"
     depends_on:
       - web
-
-networks:
-  web:
-    driver: bridge
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
