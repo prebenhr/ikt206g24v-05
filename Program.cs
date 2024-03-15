@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var prod = builder.Configuration.GetConnectionString("ProductionConnection");
 
 if (builder.Environment.IsDevelopment())
 {
@@ -16,7 +17,7 @@ if (builder.Environment.IsDevelopment())
 else
 {
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseNpgsql(connectionString));
+        options.UseNpgsql(prod));
 }
 
 

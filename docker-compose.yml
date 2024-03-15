@@ -1,18 +1,22 @@
 ﻿version: '3.8'
 
 services:
-  assignment_5:
+  web:
     build: .
-    container_name: assignment_5
+    container_name: web
     networks:
       - web
+    ports:
+      - "80:80"
+      - "443:443"
+
   db:
     image: postgres
-    restart: always
+    container_name: assignment_5_db
     environment:
-      POSTGRES_DB:       ${POSTGRES_DB}
-      POSTGRES_USER:     ${POSTGRES_USR}
-      POSTGRES_PASSWORD: ${POSTGRES_PWD}
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Password1.
 
   caddy:
     image: caddy
@@ -25,7 +29,7 @@ services:
     networks:
       - web
     depends_on:
-      - assignment_5
+      - web
 
 networks:
   web:

@@ -1,0 +1,3 @@
+﻿preben.rickroll.no {
+    reverse_proxy web:80
+}
